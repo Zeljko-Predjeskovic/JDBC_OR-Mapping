@@ -20,7 +20,7 @@ public class LemonadeDataAccessObjectTest {
     void initializeDB(){
         try{
             Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
-            connection.createStatement().execute("");
+            connection.createStatement().execute("CREATE TABLE lemonades(lemonadeName VARCHAR , articleNumber VARCHAR , expirationDate DATE , producedNumber INTEGER )");
             lemonadeDataAccessObject = new LemonadeDataAccessObject(connection);
 
         }catch(SQLException e){
