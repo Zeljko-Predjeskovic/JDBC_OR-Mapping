@@ -45,8 +45,8 @@ public class LemonadeDataAccessObject {
 
     }
 
-    public Lemonade save(Lemonade lemondade)
+    public Lemonade save(Lemonade lemonade)
     {
-        return lemondade;
+        return lemonade;
     }
 }

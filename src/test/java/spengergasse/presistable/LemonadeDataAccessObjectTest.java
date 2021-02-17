@@ -9,6 +9,7 @@ import spengergasse.persistence.LemonadeDataAccessObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class LemonadeDataAccessObjectTest {
@@ -32,5 +33,13 @@ public class LemonadeDataAccessObjectTest {
     void assertFindAll(){
         List<Lemonade> lemonadeList = lemonadeDataAccessObject.findAll();
         Assertions.assertThat(lemonadeList).isNotNull().isEmpty();
+    }
+
+    @Test
+    void assertSave(){
+        Lemonade lemonade = new Lemonade("Coca Cola", "657883930", LocalDate.now().plusMonths(2),200);
+        Lemonade savedLemonade = lemonadeDataAccessObject.save(lemonade);
+        Assertions.assertThat(savedLemonade).isEqualTo(lemonade);
+
     }
 }
