@@ -21,7 +21,7 @@ public class LemonadeDataAccessObjectTest {
     void initializeDB(){
         try{
             Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
-            connection.createStatement().execute("CREATE TABLE lemonades(id INTEGER PRIMARY KEY ,lemonadeName VARCHAR , articleNumber VARCHAR , expirationDate DATE , producedNumber INTEGER )");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS lemonades(id NUMBER PRIMARY KEY AUTO_INCREMENT " + " ,lemonadeName VARCHAR , articleNumber VARCHAR , expirationDate DATE , producedNumber INTEGER )");
             lemonadeDataAccessObject = new LemonadeDataAccessObject(connection);
 
         }catch(SQLException e){
@@ -36,10 +36,10 @@ public class LemonadeDataAccessObjectTest {
     }
 
     @Test
-    void assertSave(){
+    void assertSaveInsert(){
         Lemonade lemonade = new Lemonade("Coca Cola", "657883930", LocalDate.now().plusMonths(2),200);
-        Lemonade savedLemonade = lemonadeDataAccessObject.save(lemonade);
-        Assertions.assertThat(savedLemonade).isEqualTo(lemonade);
+        lemonadeDataAccessObject.save(lemonade);
+        Assertions.assertThat(lemonade.getId()).isNotNull();
+        }
 
-    }
 }

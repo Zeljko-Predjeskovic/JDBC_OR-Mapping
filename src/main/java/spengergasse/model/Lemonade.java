@@ -5,7 +5,6 @@ import java.util.Objects;
 
 public class Lemonade extends Persistable{
 
-    private Long id;
     private String lemonadeName;
     private String articleNumber;
     private LocalDate expirationDate;
@@ -17,6 +16,7 @@ public class Lemonade extends Persistable{
         this.expirationDate = expirationDate;
         this.producedNumber = producedNumber;
     }
+
 
     public void setLemonadeName(String lemonadeName) {
         this.lemonadeName = lemonadeName;
