@@ -3,8 +3,9 @@ package spengergasse.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Lemonade {
+public class Lemonade extends Persistable{
 
+    private Long id;
     private String lemonadeName;
     private String articleNumber;
     private LocalDate expirationDate;

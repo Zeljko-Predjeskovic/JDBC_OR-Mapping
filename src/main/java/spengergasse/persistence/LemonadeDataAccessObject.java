@@ -1,6 +1,7 @@
 package spengergasse.persistence;
 
 import spengergasse.model.Lemonade;
+import spengergasse.model.Persistable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,5 +43,10 @@ public class LemonadeDataAccessObject {
         }
         return lemonades;
 
+    }
+
+    public Lemonade save(Lemonade lemondade)
+    {
+        return lemondade;
     }
 }
