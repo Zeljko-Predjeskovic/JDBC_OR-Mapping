@@ -52,12 +52,14 @@ public class LemonadeDataAccessObject {
         String articleName;
         String expirationDate;
         Integer producedNumber;
+        Long id = null;
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, lemonadeName, articleNumber, expirationDate, producedNumber FROM lemonades WHERE articleNumber=?");
             preparedStatement.setString(1, searchArticleNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
 
+                id = resultSet.getLong("id");
                 lemonadeName = resultSet.getString("lemonadeName");
                 articleName = resultSet.getString("articleNumber");
                 expirationDate = resultSet.getString("expirationDate");
@@ -69,7 +71,9 @@ public class LemonadeDataAccessObject {
         catch (SQLException e){
             throw new RuntimeException("Failed to execute SELECT for findOne",e);
         }
-        return new Lemonade(lemonadeName, articleName, LocalDate.parse(expirationDate),producedNumber);
+        Lemonade lemonade = new Lemonade(lemonadeName, articleName, LocalDate.parse(expirationDate),producedNumber);
+        lemonade.setId(id);
+        return lemonade;
 
     }
 
@@ -83,19 +87,16 @@ public class LemonadeDataAccessObject {
 
     public Lemonade update(Lemonade lemonade) {
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE  lemonades SET lemonadeName= ? , articleNumber= ? , expirationDate= ? , producedNumber = ?" +
-                    "WHERE lemonadeName=?", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE lemonades SET lemonadeName= ? , articleNumber= ? , expirationDate= ? , producedNumber = ? " +
+                    "WHERE articleNumber=?");
             preparedStatement.setString(1, lemonade.getLemonadeName());
             preparedStatement.setString(2, lemonade.getArticleNumber());
             preparedStatement.setObject(3, lemonade.getExpirationDate());
             preparedStatement.setLong(4, lemonade.getProducedNumber());
-            preparedStatement.setString(5, lemonade.getLemonadeName());
-            Long id = null;
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            while(generatedKeys.next()){
-                id = generatedKeys.getLong(1);
-            }
-            lemonade.setId(id);
+            preparedStatement.setString(5, lemonade.getArticleNumber());
+
+            preparedStatement.executeUpdate();
+
         }
         catch(SQLException e) {
             throw new RuntimeException("Failed update", e);

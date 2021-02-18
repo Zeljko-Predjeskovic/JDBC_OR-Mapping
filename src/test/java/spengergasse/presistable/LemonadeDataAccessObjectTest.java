@@ -56,17 +56,17 @@ public class LemonadeDataAccessObjectTest {
 
     @Test
     void assertFindOne(){
-        Assertions.assertThat(lemonadeDataAccessObject.findOneByArticleNumber("647883930").getLemonadeName()).isEqualTo("Cola");
-    }
+        Assertions.assertThat(lemonadeDataAccessObject.findOneByArticleNumber("647883930").getId()).isEqualTo(2);  }
 
 
-   /* @Test
+    @Test
     void assertUpdate(){
-        Lemonade lemonade = new Lemonade("Fanta", "657883930", LocalDate.now().plusMonths(2),250);
+        LocalDate expirationDate = LocalDate.of(2000,6,2);
+        Lemonade lemonade = new Lemonade("Cola", "647883930", expirationDate,500);
         lemonadeDataAccessObject.update(lemonade);
-        Assertions.assertThat(lemonade.getId()).isNotNull();
+        Assertions.assertThat(lemonade).isNotNull();
 
-    }*/
+    }
 
     @Test
     void assertSaveInsert(){
