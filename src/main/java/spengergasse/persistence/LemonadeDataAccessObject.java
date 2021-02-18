@@ -5,6 +5,7 @@ import spengergasse.model.Persistable;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +29,13 @@ public class LemonadeDataAccessObject {
                 var id = resultSet.getLong("id");
                 var lemonadeName = resultSet.getString("lemonadeName");
                 var articleName = resultSet.getString("expirationDate");
-                var expirationDate = resultSet.getObject("", LocalDate.class);
+                var expirationDate = resultSet.getString("expirationDate");
                 Integer producedNumber = resultSet.getInt("producedNumber");
                 if(resultSet.wasNull()){
                     producedNumber=null;
                 }
-                Lemonade lemonade = new Lemonade(lemonadeName,articleName,expirationDate,producedNumber);
+                LocalDate expirDate = LocalDate.parse(expirationDate);
+                Lemonade lemonade = new Lemonade(lemonadeName,articleName, expirDate,producedNumber);
                 lemonade.setId(id);
                 lemonades.add(lemonade);
             }
@@ -53,11 +55,29 @@ public class LemonadeDataAccessObject {
         return update(lemonade);
     }
 
-    private Lemonade update(Lemonade lemonade) {
+    public Lemonade update(Lemonade lemonade) {
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE  lemonades SET lemonadeName= ? , articleNumber= ? , expirationDate= ? , producedNumber = ?" +
+                    "WHERE lemonadeName=?", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, lemonade.getLemonadeName());
+            preparedStatement.setString(2, lemonade.getArticleNumber());
+            preparedStatement.setObject(3, lemonade.getExpirationDate());
+            preparedStatement.setLong(4, lemonade.getProducedNumber());
+            preparedStatement.setString(5, lemonade.getLemonadeName());
+            Long id = null;
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            while(generatedKeys.next()){
+                id = generatedKeys.getLong(1);
+            }
+            lemonade.setId(id);
+        }
+        catch(SQLException e) {
+            throw new RuntimeException("Failed update", e);
+        }
         return lemonade;
     }
 
-    private Lemonade insert(Lemonade lemonade) {
+    public Lemonade insert(Lemonade lemonade) {
         try{
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO lemonades (lemonadeName, articleNumber, expirationDate, producedNumber) " +
                     "VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);

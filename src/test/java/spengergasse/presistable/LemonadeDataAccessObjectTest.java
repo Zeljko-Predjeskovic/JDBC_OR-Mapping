@@ -1,8 +1,11 @@
 package spengergasse.presistable;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.engine.support.descriptor.FileSystemSource;
 import spengergasse.model.Lemonade;
 import spengergasse.persistence.LemonadeDataAccessObject;
 
@@ -14,14 +17,15 @@ import java.util.List;
 
 public class LemonadeDataAccessObjectTest {
 
+    Connection connection;
     private LemonadeDataAccessObject lemonadeDataAccessObject;
 
 
     @BeforeEach
     void initializeDB(){
         try{
-            Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
-            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS lemonades(id NUMBER PRIMARY KEY AUTO_INCREMENT " + " ,lemonadeName VARCHAR , articleNumber VARCHAR , expirationDate DATE , producedNumber INTEGER )");
+            connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS lemonades(id INTEGER PRIMARY KEY AUTOINCREMENT,lemonadeName VARCHAR , articleNumber VARCHAR , expirationDate DATE , producedNumber INTEGER );");
             lemonadeDataAccessObject = new LemonadeDataAccessObject(connection);
 
         }catch(SQLException e){
@@ -29,18 +33,45 @@ public class LemonadeDataAccessObjectTest {
         }
     }
 
-    @Test
-    void assertFindAll(){
-        List<Lemonade> lemonadeList = lemonadeDataAccessObject.findAll();
-        Assertions.assertThat(lemonadeList).isNotNull().isEmpty();
+    @AfterEach
+    void destroyDB(){
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        }catch (SQLException e){
+            throw new RuntimeException("Failed destryoing Database",e);
+        }
     }
 
+    @Test
+    void assertFindAll(){
 
+        List<Lemonade> lemonadeList = lemonadeDataAccessObject.findAll();
+        System.out.println(""+lemonadeList);
+        Assertions.assertThat(lemonadeList).isNotNull();
+
+    }
+
+    /*@Test
+    void assertFindOne(){
+
+    }*/
+
+
+   /* @Test
+    void assertUpdate(){
+        Lemonade lemonade = new Lemonade("Fanta", "657883930", LocalDate.now().plusMonths(2),250);
+        lemonadeDataAccessObject.update(lemonade);
+        Assertions.assertThat(lemonade.getId()).isNotNull();
+
+    }*/
 
     @Test
     void assertSaveInsert(){
-        Lemonade lemonade = new Lemonade("Coca Cola", "657883930", LocalDate.now().plusMonths(2),200);
-        lemonadeDataAccessObject.save(lemonade);
+        LocalDate expirationDate = LocalDate.of(2000,6,2);
+        Lemonade lemonade = new Lemonade("Cola", "647883930", expirationDate,250);
+        lemonadeDataAccessObject.insert(lemonade);
         Assertions.assertThat(lemonade.getId()).isNotNull();
         }
 
