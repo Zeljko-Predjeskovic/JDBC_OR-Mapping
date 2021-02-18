@@ -76,4 +76,8 @@ public class LemonadeDataAccessObjectTest {
         Assertions.assertThat(lemonade.getId()).isNotNull();
         }
 
+    @Test
+    void assertDelete(){
+
+    }
 }

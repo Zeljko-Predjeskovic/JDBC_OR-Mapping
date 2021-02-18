@@ -128,4 +128,8 @@ public class LemonadeDataAccessObject {
         }
         return lemonade;
     }
+
+    public Lemonade Delete(Lemonade lemonade){
+        return lemonade;
+    }
 }
