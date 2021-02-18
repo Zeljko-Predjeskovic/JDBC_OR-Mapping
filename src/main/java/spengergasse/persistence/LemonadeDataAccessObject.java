@@ -47,6 +47,32 @@ public class LemonadeDataAccessObject {
 
     }
 
+    public Lemonade findOneByArticleNumber(String searchArticleNumber){
+        String lemonadeName;
+        String articleName;
+        String expirationDate;
+        Integer producedNumber;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, lemonadeName, articleNumber, expirationDate, producedNumber FROM lemonades WHERE articleNumber=?");
+            preparedStatement.setString(1, searchArticleNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+                lemonadeName = resultSet.getString("lemonadeName");
+                articleName = resultSet.getString("articleNumber");
+                expirationDate = resultSet.getString("expirationDate");
+                producedNumber = resultSet.getInt("producedNumber");
+                if(resultSet.wasNull()) {
+                    producedNumber = null;
+                }
+        }
+        catch (SQLException e){
+            throw new RuntimeException("Failed to execute SELECT for findOne",e);
+        }
+        return new Lemonade(lemonadeName, articleName, LocalDate.parse(expirationDate),producedNumber);
+
+    }
+
     public Lemonade save(Lemonade lemonade)
     {
         if(lemonade.isNew()){

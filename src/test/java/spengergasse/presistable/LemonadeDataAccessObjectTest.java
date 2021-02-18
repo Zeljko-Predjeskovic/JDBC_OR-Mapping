@@ -1,5 +1,6 @@
 package spengergasse.presistable;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -53,10 +54,10 @@ public class LemonadeDataAccessObjectTest {
 
     }
 
-    /*@Test
+    @Test
     void assertFindOne(){
-
-    }*/
+        Assertions.assertThat(lemonadeDataAccessObject.findOneByArticleNumber("647883930").getLemonadeName()).isEqualTo("Cola");
+    }
 
 
    /* @Test
