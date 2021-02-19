@@ -13,6 +13,6 @@ im terminal folgenden command eingeben.
     
 ## Über das Projekt
 
-   Für mehrere Informationen und genauere Dokumentation bitte nach dem
-   installieren im target/generated-docs die html file im browser öffnen.
+Dokumentation des Projektes in targets/generated-docs/2021-4chif-pos-predjeskovic-jdbc.html 
+
  
