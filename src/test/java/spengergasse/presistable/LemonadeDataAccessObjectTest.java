@@ -71,13 +71,13 @@ public class LemonadeDataAccessObjectTest {
     @Test
     void assertSaveInsert(){
         LocalDate expirationDate = LocalDate.of(2000,6,2);
-        Lemonade lemonade = new Lemonade("Cola", "647883930", expirationDate,250);
+        Lemonade lemonade = new Lemonade("Sprite", "657883930", expirationDate,250);
         lemonadeDataAccessObject.insert(lemonade);
         Assertions.assertThat(lemonade.getId()).isNotNull();
         }
 
     @Test
     void assertDelete(){
-
+        Assertions.assertThat(lemonadeDataAccessObject.delete("657883930").getArticleNumber()).isEqualTo("607883930");
     }
 }

@@ -1,0 +1,55 @@
+=== Dokumentation zu pos-jdbc projekt Stand 19.02.2021
+Predjeskovic Zeljko
+
+==== Aufgaben:
+
+- Eine Connection zwischen Backend und Datenbank mit
+jdbc.
+- CRUD System (Create, Read, Update, Delete) mittels Java SQL Statements
+
+==== Entwurf:
+
+[ditaa]
+....
+                    Backend
+ +--------+     /-------------\
+ | cBLU   |     +             +
+ |        |     |DB connection|
+ | SQLite |---->|             |
+ |        |     +-------------+
+ |     {s}|     |      ^      |
+ +--------+     |      |      |
+     ^          | DataAccess  |
+     |          \-------------/
+     |                 :
+     |  SQL Statement  |
+     +-----------------+
+....
+
+==== Implementationen
+
+- Eine Klasse Lemonade die von abstrakte Klasse Persistable erbt
+
+- Eine Klasse LemonadeDataAccessObject in Persistence für die Zuordnung und Übertragund der Datenbank
+
+- Eine Testklasse zum Testen von der Persistance Klasse
+
+==== Testen
+
+- findAll() -> Anzeigen aller Tabellenrows
+
+- findOne() -> Eine bestimmte Lemonade durch ihre Artikelnummer finden.
+
+- update() -> Updaten einer Lemonade in der Datenbank
+
+- insert() -> Erstellen einer neuen Lemonade in der Datenbank
+
+- delete() -> Löschen einer lemonade in der Datenbank
+
+Bis jetzt funktionieren die Implementation
+
+==== Was kommt als nächstes?
+
+Bearbeitung der Funktionen. Ziel ist es, die Funktionen generischer zu gestalten und in eine gewissen Business Logic aufzubauen.
+
+

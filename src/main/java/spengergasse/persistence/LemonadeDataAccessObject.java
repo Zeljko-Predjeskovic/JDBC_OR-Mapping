@@ -129,7 +129,16 @@ public class LemonadeDataAccessObject {
         return lemonade;
     }
 
-    public Lemonade Delete(Lemonade lemonade){
+    public Lemonade delete(String delArticleNumber){
+        Lemonade lemonade = findOneByArticleNumber(delArticleNumber);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM lemonades where articleNumber=?");
+            preparedStatement.setString(1,lemonade.getArticleNumber());
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException("Delete failed", e);
+        }
         return lemonade;
     }
 }
