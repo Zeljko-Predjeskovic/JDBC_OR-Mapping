@@ -2,10 +2,7 @@ package spengergasse.presistable;
 
 import com.sun.tools.jconsole.JConsoleContext;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.platform.engine.support.descriptor.FileSystemSource;
 import spengergasse.model.Lemonade;
 import spengergasse.persistence.LemonadeDataAccessObject;
@@ -16,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LemonadeDataAccessObjectTest {
 
     Connection connection;
@@ -46,38 +44,42 @@ public class LemonadeDataAccessObjectTest {
     }
 
     @Test
-    void assertFindAll(){
+    @Order(1)
+    void assertSaveInsert(){
+        LocalDate expirationDate = LocalDate.of(2000,6,2);
+        Lemonade lemonade = new Lemonade("Cola", "647883930", expirationDate,300);
+        lemonadeDataAccessObject.insert(lemonade);
+        Assertions.assertThat(lemonade.getId()).isNotNull();
+    }
 
+    @Test
+    @Order(2)
+    void assertFindOne(){
+        Assertions.assertThat(lemonadeDataAccessObject.findOneByArticleNumber("647883930").getArticleNumber()).isEqualTo("647883930");  }
+
+
+    @Test
+    @Order(3)
+    void assertUpdate(){
+        LocalDate expirationDate = LocalDate.of(2000,6,2);
+        Lemonade lemonade = new Lemonade("Cola", "647883930", expirationDate,800);
+        lemonadeDataAccessObject.update(lemonade);
+        Assertions.assertThat(lemonade).isNotNull();
+    }
+
+    @Test
+    @Order(4)
+    void assertFindAll(){
         List<Lemonade> lemonadeList = lemonadeDataAccessObject.findAll();
         System.out.println(""+lemonadeList);
         Assertions.assertThat(lemonadeList).isNotNull();
 
     }
 
-    @Test
-    void assertFindOne(){
-        Assertions.assertThat(lemonadeDataAccessObject.findOneByArticleNumber("647883930").getId()).isEqualTo(2);  }
-
 
     @Test
-    void assertUpdate(){
-        LocalDate expirationDate = LocalDate.of(2000,6,2);
-        Lemonade lemonade = new Lemonade("Cola", "647883930", expirationDate,500);
-        lemonadeDataAccessObject.update(lemonade);
-        Assertions.assertThat(lemonade).isNotNull();
-
-    }
-
-    @Test
-    void assertSaveInsert(){
-        LocalDate expirationDate = LocalDate.of(2000,6,2);
-        Lemonade lemonade = new Lemonade("Sprite", "657883930", expirationDate,250);
-        lemonadeDataAccessObject.insert(lemonade);
-        Assertions.assertThat(lemonade.getId()).isNotNull();
-        }
-
-    @Test
+    @Order(5)
     void assertDelete(){
-        Assertions.assertThat(lemonadeDataAccessObject.delete("657883930").getArticleNumber()).isEqualTo("607883930");
+        Assertions.assertThat(lemonadeDataAccessObject.delete("647883930").getArticleNumber()).isEqualTo("647883930");
     }
 }
