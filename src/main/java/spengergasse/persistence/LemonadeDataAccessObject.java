@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LemonadeDataAccessObject {
+public class LemonadeDataAccessObject{
 
     private final Connection connection;
 
