@@ -59,7 +59,7 @@
             </dependency>
         </dependencies>
 
-## Starte meine Java app
+## Starte meinen Mapper
 
     git clone https://github.com/Zeljko-Predjeskovic/JDBC_OR-Mapping.git
 
