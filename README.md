@@ -1,5 +1,25 @@
 # Or-Mapping mit JDBC
 
+## Übersicht
+
+Eine kleine Aufgabe von der Schule, die einen Einblick in JDBC verschafft.
+Datenbank connection mit sqlite. 
+
+## Starte meinen Java Mapper
+
+    git clone https://github.com/Zeljko-Predjeskovic/JDBC_OR-Mapping.git
+
+    mvn clean
+
+    mvn install
+
+
+##Models
+
+Eigentlich ziemlich unnötig für zwei Entities xDD:
+
+![img.png](img.png)
+
 ## Wichtige Pom.xml dependencies und plugins
 
         <properties>
@@ -58,11 +78,3 @@
                 <version>3.34.0</version>
             </dependency>
         </dependencies>
-
-## Starte meine Java app
-
-    git clone https://github.com/Zeljko-Predjeskovic/JDBC_OR-Mapping.git
-
-    mvn clean 
-
-    mvn install
