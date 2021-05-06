@@ -3,7 +3,6 @@ package spengergasse.presistable;
 import org.junit.jupiter.api.*;
 import org.assertj.core.api.Assertions;
 import spengergasse.model.Tea;
-import spengergasse.persistence.LemonadeDataAccessObject;
 import spengergasse.persistence.TeaDataAccesObject;
 
 import java.sql.Connection;
