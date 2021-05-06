@@ -7,7 +7,12 @@ Datenbank connection mit sqlite.
 
 ## Starte meinen Java Mapper
 
-    git clone https://github.com/Zeljko-Predjeskovic/JDBC_OR-Mapping.git
+Download:
+
+    git init
+    git pull https://github.com/Zeljko-Predjeskovic/JDBC_OR-Mapping.git main
+    
+Start:
 
     mvn clean
 
