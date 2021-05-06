@@ -60,9 +60,12 @@
         </dependencies>
 
 ## Starte meinen Mapper
+Install:
+    
+    git init
+    git pull https://github.com/Zeljko-Predjeskovic/JDBC_OR-Mapping.git main
 
-    git clone https://github.com/Zeljko-Predjeskovic/JDBC_OR-Mapping.git
+Start:
 
     mvn clean 
-
     mvn install
