@@ -15,7 +15,7 @@ public class TeaDataAccessObjectTest {
 
     Connection connection;
     private TeaDataAccesObject teaDataAccessObject;
-
+    private static Long id;
 
     @BeforeEach
     void initializeDB(){
@@ -55,6 +55,8 @@ public class TeaDataAccessObjectTest {
 
         Tea erg = (Tea) teaDataAccessObject.insert(tea);
 
+        id = tea.getId();
+
         Assertions.assertThat(erg).isNotNull();
     }
 
@@ -62,10 +64,22 @@ public class TeaDataAccessObjectTest {
     @Order(3)
     void assertTeaUpdate(){
         Tea tea = new Tea("Grüntee",10);
-        tea.setId(5L);
+        tea.setId(id);
         Tea erg = (Tea) teaDataAccessObject.update(tea);
 
         Assertions.assertThat(erg).isNotNull();
+    }
+
+    @Test
+    @Order(4)
+    void assertTeaDelete(){
+        Tea tea = new Tea("Grüntee",10);
+        tea.setId(id);
+
+        Tea erg = (Tea) teaDataAccessObject.delete(tea);
+
+        Assertions.assertThat(erg).isNotNull();
+
     }
 
 }

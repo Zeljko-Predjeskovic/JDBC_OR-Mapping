@@ -84,4 +84,27 @@ public class TeaDataAccesObject extends AbstractDataAccessObject{
     }
 
 
+    @Override
+    protected String deleteStatement() {
+        return "DELETE FROM teas where id=?";
+    }
+
+    @Override
+    protected void bindPersistableDelete(PreparedStatement preparedStatement, Persistable persistable) {
+        if (persistable instanceof Tea ) {
+            Tea tea = (Tea) persistable;
+            try{
+                preparedStatement.setLong(1, tea.getId());
+
+            } catch (Exception e){
+                throw new RuntimeException("Failed to bind tea into insert!! " , e);
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Cannot bind Tea because persistable is not Tea");
+        }
+    }
+
+
+
 }

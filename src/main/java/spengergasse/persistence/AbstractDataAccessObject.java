@@ -83,4 +83,20 @@ public abstract class AbstractDataAccessObject <T extends Persistable> {
 
     public abstract void bindPersistableInsert(PreparedStatement preparedStatement, Object persistable);
 
+    public T delete(T persistable){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteStatement());
+            bindPersistableDelete(preparedStatement, persistable);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException("Delete failed", e);
+        }
+        return persistable;
+    }
+
+    protected abstract void bindPersistableDelete(PreparedStatement preparedStatement, T persistable);
+
+    protected abstract String deleteStatement();
+
 }
