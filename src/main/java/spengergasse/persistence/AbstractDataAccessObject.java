@@ -44,10 +44,8 @@ public abstract class AbstractDataAccessObject <T extends Persistable> {
             bindPersistableUpdate(preparedStatement, persistable);
             int rows = preparedStatement.executeUpdate();
             if(rows != 1){
-                throw new RuntimeException("Too many rows, more data has been updated");
+                throw new RuntimeException("Too many rows, update stopped");
             }
-
-            preparedStatement.executeUpdate();
 
         }
         catch(SQLException e) {
@@ -59,5 +57,30 @@ public abstract class AbstractDataAccessObject <T extends Persistable> {
     protected abstract String updateStatement();
 
     protected abstract void bindPersistableUpdate(PreparedStatement preparedStatement, Object persistable);
+
+    public T insert(T persistable) {
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(insertStatement(), Statement.RETURN_GENERATED_KEYS);
+            bindPersistableInsert(preparedStatement, persistable);
+            int rows = preparedStatement.executeUpdate();
+            if (rows!=1){
+                throw new RuntimeException("To many rows inserted");
+            }
+            Long id = null;
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            while(generatedKeys.next()){
+                id = generatedKeys.getLong(1);
+            }
+            persistable.setId(id);
+        }
+        catch (SQLException e){
+            throw new RuntimeException("Insert Lemonade failed", e);
+        }
+        return persistable;
+    }
+
+    public abstract String insertStatement();
+
+    public abstract void bindPersistableInsert(PreparedStatement preparedStatement, Object persistable);
 
 }

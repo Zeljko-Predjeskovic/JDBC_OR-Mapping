@@ -40,18 +40,29 @@ public class TeaDataAccessObjectTest {
         }
     }
 
+
     @Test
     @Order(1)
     void assertTeaFindAll(){
        List<Tea> teas = teaDataAccessObject.findAll();
-       Assertions.assertThat(teas).isNotNull().isEmpty();
+       Assertions.assertThat(teas).isNotNull();
     }
 
     @Test
     @Order(2)
-    void assertTeaUpdate(){
+    void assertTeaInsert(){
         Tea tea = new Tea("Grüntee",10);
 
+        Tea erg = (Tea) teaDataAccessObject.insert(tea);
+
+        Assertions.assertThat(erg).isNotNull();
+    }
+
+    @Test
+    @Order(3)
+    void assertTeaUpdate(){
+        Tea tea = new Tea("Grüntee",10);
+        tea.setId(5L);
         Tea erg = (Tea) teaDataAccessObject.update(tea);
 
         Assertions.assertThat(erg).isNotNull();

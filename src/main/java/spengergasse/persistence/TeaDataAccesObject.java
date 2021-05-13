@@ -4,10 +4,7 @@ import spengergasse.model.Lemonade;
 import spengergasse.model.Persistable;
 import spengergasse.model.Tea;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 
 public class TeaDataAccesObject extends AbstractDataAccessObject{
@@ -40,7 +37,7 @@ public class TeaDataAccesObject extends AbstractDataAccessObject{
 
     @Override
     protected String updateStatement() {
-        return "UPDATE teas SET teeName= ? , caffeinInMiligramm= ? WHERE id=?";
+        return "UPDATE teas SET teeName= ? , caffeinInMiligramm= ? WHERE id = ?";
     }
 
     @Override
@@ -50,6 +47,7 @@ public class TeaDataAccesObject extends AbstractDataAccessObject{
             try{
                 preparedStatement.setString(1, tea.getTeeName());
                 preparedStatement.setInt(2,tea.getCaffeinInMilligramm());
+                preparedStatement.setLong(3, tea.getId());
 
             } catch (Exception e){
                 throw new RuntimeException("Failed to bind tea into update!! " , e);
@@ -58,6 +56,31 @@ public class TeaDataAccesObject extends AbstractDataAccessObject{
         else {
             throw new IllegalArgumentException("Cannot bind Tea because persistable is not Tea");
         }
+    }
+
+    @Override
+    public String insertStatement() {
+        return "INSERT INTO teas (teeName, caffeinInMiligramm) " +
+                "VALUES (?,?)";
+    }
+
+    @Override
+    public void bindPersistableInsert(PreparedStatement preparedStatement, Object persistable) {
+        if (persistable instanceof Tea ) {
+            Tea tea = (Tea) persistable;
+            try{
+                preparedStatement.setString(1, tea.getTeeName());
+                preparedStatement.setInt(2,tea.getCaffeinInMilligramm());
+
+            } catch (Exception e){
+                throw new RuntimeException("Failed to bind tea into insert!! " , e);
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Cannot bind Tea because persistable is not Tea");
+        }
+
+
     }
 
 
