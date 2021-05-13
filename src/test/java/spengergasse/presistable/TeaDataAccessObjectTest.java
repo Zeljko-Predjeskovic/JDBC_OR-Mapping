@@ -15,7 +15,7 @@ public class TeaDataAccessObjectTest {
 
     Connection connection;
     private TeaDataAccesObject teaDataAccessObject;
-
+    private static Long id;
 
     @BeforeEach
     void initializeDB(){
@@ -40,11 +40,46 @@ public class TeaDataAccessObjectTest {
         }
     }
 
+
     @Test
     @Order(1)
     void assertTeaFindAll(){
        List<Tea> teas = teaDataAccessObject.findAll();
-       Assertions.assertThat(teas).isNotNull().isEmpty();
+       Assertions.assertThat(teas).isNotNull();
+    }
+
+    @Test
+    @Order(2)
+    void assertTeaInsert(){
+        Tea tea = new Tea("Grüntee",10);
+
+        Tea erg = (Tea) teaDataAccessObject.insert(tea);
+
+        id = tea.getId();
+
+        Assertions.assertThat(erg).isNotNull();
+    }
+
+    @Test
+    @Order(3)
+    void assertTeaUpdate(){
+        Tea tea = new Tea("Grüntee",10);
+        tea.setId(id);
+        Tea erg = (Tea) teaDataAccessObject.update(tea);
+
+        Assertions.assertThat(erg).isNotNull();
+    }
+
+    @Test
+    @Order(4)
+    void assertTeaDelete(){
+        Tea tea = new Tea("Grüntee",10);
+        tea.setId(id);
+
+        Tea erg = (Tea) teaDataAccessObject.delete(tea);
+
+        Assertions.assertThat(erg).isNotNull();
+
     }
 
 }
