@@ -47,4 +47,14 @@ public class TeaDataAccessObjectTest {
        Assertions.assertThat(teas).isNotNull().isEmpty();
     }
 
+    @Test
+    @Order(2)
+    void assertTeaUpdate(){
+        Tea tea = new Tea("Grüntee",10);
+
+        Tea erg = (Tea) teaDataAccessObject.update(tea);
+
+        Assertions.assertThat(erg).isNotNull();
+    }
+
 }

@@ -5,6 +5,7 @@ import spengergasse.model.Persistable;
 import spengergasse.model.Tea;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -36,5 +37,28 @@ public class TeaDataAccesObject extends AbstractDataAccessObject{
             throw new RuntimeException("Failed to map Resultset to Tea", e);
         }
     }
+
+    @Override
+    protected String updateStatement() {
+        return "UPDATE teas SET teeName= ? , caffeinInMiligramm= ? WHERE id=?";
+    }
+
+    @Override
+    protected void bindPersistableUpdate(PreparedStatement preparedStatement, Object persistable) {
+        if (persistable instanceof Tea ) {
+            Tea tea = (Tea) persistable;
+            try{
+                preparedStatement.setString(1, tea.getTeeName());
+                preparedStatement.setInt(2,tea.getCaffeinInMilligramm());
+
+            } catch (Exception e){
+                throw new RuntimeException("Failed to bind tea into update!! " , e);
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Cannot bind Tea because persistable is not Tea");
+        }
+    }
+
 
 }

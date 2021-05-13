@@ -2,11 +2,9 @@ package spengergasse.persistence;
 
 import spengergasse.model.Lemonade;
 import spengergasse.model.Persistable;
+import spengergasse.model.Tea;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,15 +38,14 @@ public abstract class AbstractDataAccessObject <T extends Persistable> {
     protected abstract T mapResultSetToPersistable(ResultSet resultSet);
 
 
-  /*  public T update(Long id) {
+    public T update(T persistable) {
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE lemonades SET lemonadeName= ? , articleNumber= ? , expirationDate= ? , producedNumber = ? " +
-                    "WHERE articleNumber=?");
-            preparedStatement.setString(1, lemonade.getLemonadeName());
-            preparedStatement.setString(2, lemonade.getArticleNumber());
-            preparedStatement.setObject(3, lemonade.getExpirationDate());
-            preparedStatement.setLong(4, lemonade.getProducedNumber());
-            preparedStatement.setString(5, lemonade.getArticleNumber());
+            PreparedStatement preparedStatement = connection.prepareStatement(updateStatement(), Statement.RETURN_GENERATED_KEYS);
+            bindPersistableUpdate(preparedStatement, persistable);
+            int rows = preparedStatement.executeUpdate();
+            if(rows != 1){
+                throw new RuntimeException("Too many rows, more data has been updated");
+            }
 
             preparedStatement.executeUpdate();
 
@@ -56,8 +53,11 @@ public abstract class AbstractDataAccessObject <T extends Persistable> {
         catch(SQLException e) {
             throw new RuntimeException("Failed update", e);
         }
-        return lemonade;
-    }*/
+        return persistable;
+    }
 
+    protected abstract String updateStatement();
+
+    protected abstract void bindPersistableUpdate(PreparedStatement preparedStatement, Object persistable);
 
 }
